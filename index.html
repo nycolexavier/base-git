@@ -1,363 +1,440 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jornada Git: A Aventura de Zé 🇧🇷</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Fira Code', monospace;
-      background-color: #121212;
-      color: #e0e0e0;
-      overflow: hidden;
-    }
-    .container {
-      display: flex;
-      height: 100vh;
-    }
-    .left, .right {
-      width: 50%;
-      padding: 20px;
-      box-sizing: border-box;
-      overflow-y: auto;
-    }
-    .left {
-      background-color: #1e1e1e;
-      border-right: 2px solid #00cc00;
-      animation: fadeIn 0.5s ease-in;
-    }
-    .right {
-      background-color: #1e1e1e;
-      font-family: 'Fira Code', monospace;
-      color: #00ff00;
-      display: flex;
-      flex-direction: column;
-    }
-    h1 {
-      color: #ffeb3b;
-      text-align: center;
-      font-size: 1.8em;
-      margin-bottom: 20px;
-      text-shadow: 0 0 5px #ffeb3b;
-    }
-    h2 {
-      color: #00ff00;
-      margin: 0 0 10px 0;
-      font-size: 1.2em;
-    }
-    .task-box {
-      background-color: #252525;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #333;
-      margin: 15px 0;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
-    .command-input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      background-color: #1e1e1e;
-      border: 1px solid #00cc00;
-      border-radius: 5px;
-      color: #00ff00;
-      font-family: 'Fira Code', monospace;
-      font-size: 14px;
-      box-shadow: inset 0 0 5px rgba(0, 255, 0, 0.2);
-    }
-    .command-input:focus {
-      outline: none;
-      border-color: #ffeb3b;
-      box-shadow: 0 0 8px #ffeb3b;
-    }
-    button {
-      padding: 8px 16px;
-      background-color: #00cc00;
-      color: #e0e0e0;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
-      transition: transform 0.2s, background-color 0.2s;
-      font-family: 'Fira Code', monospace;
-    }
-    button:hover {
-      background-color: #00e600;
-      transform: scale(1.05);
-    }
-    button:disabled {
-      background-color: #444;
-      cursor: not-allowed;
-    }
-    .hint-button {
-      background-color: #ffeb3b;
-      color: #1e1e1e;
-    }
-    .hint-button:hover {
-      background-color: #ffd700;
-    }
-    .hint-box {
-      background-color: #252525;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #00cc00;
-      margin-top: 10px;
-      color: #00ff00;
-      display: none;
-      animation: fadeIn 0.3s;
-    }
-    .terminal {
-      background-color: #1e1e1e;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #333;
-      flex-grow: 1;
-      white-space: pre-wrap;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-      overflow-y: auto;
-      position: relative;
-    }
-    .terminal::after {
-      content: '';
-      width: 8px;
-      height: 16px;
-      background-color: #00ff00;
-      position: absolute;
-      animation: blink 1s step-end infinite;
-    }
-    .canvas-container {
-      background-color: #252525;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #333;
-      margin-top: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
-    canvas {
-      width: 100%;
-      height: 200px;
-      animation: pulse 0.5s ease-in;
-    }
-    .completion-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(18, 18, 18, 0.9);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      animation: fadeIn 0.5s;
-      z-index: 1000;
-    }
-    .completion-screen h2 {
-      color: #ffeb3b;
-      font-size: 2.5em;
-      text-shadow: 0 0 10px #ffeb3b;
-      margin-bottom: 20px;
-    }
-    .completion-screen button {
-      background-color: #00cc00;
-      padding: 12px 24px;
-      font-size: 1.2em;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-      100% { transform: scale(1); }
-    }
-    .success { color: #00ff00; animation: fadeIn 0.3s; }
-    .error { color: #ff4040; animation: fadeIn 0.3s; }
-    .prompt { color: #00ff00; }
-    .terminal-input { color: #00ff00; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jornada Git: A Aventura de Zé 🇧🇷</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Fira Code', monospace;
+            background-color: #121212;
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .left,
+        .right {
+            width: 50%;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .left {
+            background-color: #1e1e1e;
+            border-right: 2px solid #00cc00;
+            animation: fadeIn 0.5s ease-in;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .right {
+            background-color: #1e1e1e;
+            font-family: 'Fira Code', monospace;
+            color: #00ff00;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #ffeb3b;
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px #ffeb3b;
+        }
+
+        h2 {
+            color: #00ff00;
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .task-box {
+            background-color: #252525;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin: 15px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .command-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #1e1e1e;
+            border: 1px solid #00cc00;
+            border-radius: 5px;
+            color: #00ff00;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            box-shadow: inset 0 0 5px rgba(0, 255, 0, 0.2);
+        }
+
+        .command-input:focus {
+            outline: none;
+            border-color: #ffeb3b;
+            box-shadow: 0 0 8px #ffeb3b;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #00cc00;
+            color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s, background-color 0.2s;
+            font-family: 'Fira Code', monospace;
+        }
+
+        button:hover {
+            background-color: #00e600;
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background-color: #444;
+            cursor: not-allowed;
+        }
+
+        .hint-button {
+            background-color: #ffeb3b;
+            color: #1e1e1e;
+        }
+
+        .hint-button:hover {
+            background-color: #ffd700;
+        }
+
+        .hint-box {
+            background-color: #252525;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #00cc00;
+            margin-top: 10px;
+            color: #00ff00;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .terminal {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            flex-grow: 1;
+            white-space: pre-wrap;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .terminal::after {
+            content: '';
+            width: 8px;
+            height: 16px;
+            background-color: #00ff00;
+            position: absolute;
+            animation: blink 1s step-end infinite;
+        }
+
+        .canvas-container {
+            background-color: #252525;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-top: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        canvas {
+            width: 100%;
+            height: 200px;
+            animation: pulse 0.5s ease-in;
+        }
+
+        .completion-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(18, 18, 18, 0.9);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s;
+            z-index: 1000;
+        }
+
+        .completion-screen h2 {
+            color: #ffeb3b;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px #ffeb3b;
+            margin-bottom: 20px;
+        }
+
+        .completion-screen button {
+            background-color: #00cc00;
+            padding: 12px 24px;
+            font-size: 1.2em;
+        }
+
+        .credit {
+            text-align: center;
+            font-size: 0.9em;
+            color: #00ff00;
+            margin-top: auto;
+            padding: 10px;
+            background-color: #252525;
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+
+        .credit span {
+            color: #ffeb3b;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .success {
+            color: #00ff00;
+            animation: fadeIn 0.3s;
+        }
+
+        .error {
+            color: #ff4040;
+            animation: fadeIn 0.3s;
+        }
+
+        .prompt {
+            color: #00ff00;
+        }
+
+        .terminal-input {
+            color: #00ff00;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="container">
-    <div class="left">
-      <h1>Jornada Git: A Aventura de Zé 🇧🇷</h1>
-      <div id="question"></div>
-      <input type="text" id="commandInput" class="command-input" placeholder="Digite o comando Git...">
-      <button onclick="checkCommand()">Enviar Comando ☕</button>
-      <button onclick="showHint()" class="hint-button">Dica 💡</button>
-      <button onclick="previousQuestion()" id="prevButton" disabled>Anterior</button>
-      <button onclick="nextQuestion()" id="nextButton" disabled>Próximo 🎉</button>
-      <div id="hintBox" class="hint-box"></div>
+    <div class="container">
+        <div class="left">
+            <h1>Jornada Git: A Aventura de Zé 🇧🇷</h1>
+            <div id="question"></div>
+            <input type="text" id="commandInput" class="command-input" placeholder="Digite o comando Git...">
+            <button onclick="checkCommand()">Enviar Comando ☕</button>
+            <button onclick="showHint()" class="hint-button">Dica 💡</button>
+            <button onclick="previousQuestion()" id="prevButton" disabled>Anterior</button>
+            <button onclick="nextQuestion()" id="nextButton" disabled>Próximo 🎉</button>
+            <div id="hintBox" class="hint-box"></div>
+            <div class="credit">Feito por <span>Nycole</span>, dúvidas/sugestões: <a href="https://github.com/nycolexavier" target="_blank">nycolexavier</a> no Github</div>
+        </div>
+        <div class="right">
+            <h2>Terminal CodeZap</h2>
+            <div class="terminal" id="terminal"></div>
+            <div class="canvas-container">
+                <h2>Árvore de Commits</h2>
+                <canvas id="commitTree"></canvas>
+            </div>
+        </div>
     </div>
-    <div class="right">
-      <h2>Terminal CodeZap</h2>
-      <div class="terminal" id="terminal"></div>
-      <div class="canvas-container">
-        <h2>Árvore de Commits</h2>
-        <canvas id="commitTree"></canvas>
-      </div>
+    <div id="completionScreen" class="completion-screen">
+        <h2>🏆 Parabéns, Zé! Você dominou o Git na CodeZap! 🎉</h2>
+        <button onclick="restartGame()">Jogar Novamente 🇧🇷</button>
     </div>
-  </div>
-  <div id="completionScreen" class="completion-screen">
-    <h2>🏆 Parabéns, Zé! Você dominou o Git na CodeZap! 🎉</h2>
-    <button onclick="restartGame()">Jogar Novamente 🇧🇷</button>
-  </div>
 
-  <script>
-    const questions = [
-      {
-        title: "Nível 1: Primeiro Passo (Iniciante)",
-        story: "Alex te entrega uma pasta de projeto e diz: 'Vamos começar, Zé! Transforme essa pasta num repositório Git.'",
-        explanation: "Para começar a usar Git num projeto, você precisa inicializar um repositório na pasta do projeto. Isso cria uma pasta oculta `.git` que armazena o histórico de versões.",
-        task: "Digite o comando para inicializar um repositório Git.",
-        validate: (input) => input.trim() === 'git init',
-        hints: ["Qual comando inicializa um repositório Git?", "Tente algo como 'git <ação>' para começar."]
-      },
-      {
-        title: "Nível 2: Adicionando Alterações (Iniciante)",
-        story: "Você escreveu um código para uma nova funcionalidade, Zé. Alex diz: 'Ótimo! Primeiro, adicione suas alterações ao Git para prepará-las.'",
-        explanation: "Antes de salvar mudanças no Git, você precisa colocá-las na área de staging, que é como uma lista de alterações prontas para o commit.",
-        task: "Digite o comando para adicionar todas as alterações à área de staging.",
-        validate: (input) => input.trim() === 'git add .',
-        hints: ["Como adicionar todos os arquivos alterados ao staging?", "Use 'git add' seguido de um caractere especial."]
-      },
-      {
-        title: "Nível 3: Criando um Commit (Iniciante)",
-        story: "Suas alterações estão prontas, Zé! Alex diz: 'Agora salve essas mudanças num commit com uma mensagem clara.'",
-        explanation: "Um commit é como um instantâneo das suas alterações, salvo com uma mensagem que descreve o que foi feito.",
-        task: "Digite o comando para criar um commit com a mensagem 'Adiciona nova funcionalidade'.",
-        validate: (input) => {
-          const normalized = input.replace(/\s+/g, ' ').trim();
-          return normalized === "git commit -m 'Adiciona nova funcionalidade'" ||
-                 normalized === 'git commit -m "Adiciona nova funcionalidade"';
-        },
-        hints: ["Qual comando cria um commit com uma mensagem?", "Tente 'git commit' com a opção '-m' seguida da mensagem."]
-      },
-      {
-        title: "Nível 4: Verificando o Progresso (Iniciante)",
-        story: "Alex quer saber o que você alterou antes de mandar o código para o time, Zé. Ela pede: 'Me mostra o que mudou nos arquivos desde o último commit.'",
-        explanation: "O Git permite ver as diferenças entre os arquivos atuais e o último commit, útil para revisar mudanças antes de salvá-las.",
-        task: "Digite o comando para exibir as alterações feitas nos arquivos.",
-        validate: (input) => input.trim() === 'git diff',
-        hints: ["Como ver as diferenças entre o estado atual e o último commit?", "Tente 'git <comando>' que mostra alterações."]
-      },
-      {
-        title: "Nível 5: Criando uma Branch (Intermediário)",
-        story: "A CodeZap quer testar uma funcionalidade experimental, Zé. Alex te orienta: 'Primeiro, crie uma nova branch chamada 'feature-experimental'.'",
-        explanation: "Uma branch é como uma linha paralela de desenvolvimento, permitindo alterações sem afetar a branch principal (geralmente `main`).",
-        task: "Digite o comando para criar uma nova branch chamada 'feature-experimental'.",
-        validate: (input) => input.trim() === 'git branch feature-experimental',
-        hints: ["Qual comando cria uma branch sem mudar para ela?", "Use 'git branch' seguido do nome da branch."]
-      },
-      {
-        title: "Nível 6: Mudando para a Branch (Intermediário)",
-        story: "Você criou a branch, Zé! Agora Alex diz: 'Mude para a branch 'feature-experimental' para começar a trabalhar nela.'",
-        explanation: "Para trabalhar numa branch, você precisa mudar para ela, definindo-a como a branch ativa.",
-        task: "Digite o comando para mudar para a branch 'feature-experimental'.",
-        validate: (input) => input.trim() === 'git checkout feature-experimental',
-        hints: ["Como mudar para uma branch existente?", "Tente 'git checkout' seguido do nome da branch."]
-      },
-      {
-        title: "Nível 7: Preparando o Merge (Intermediário)",
-        story: "Sua funcionalidade experimental foi aprovada, Zé! Alex diz: 'Antes de integrar o código, volte para a branch principal.'",
-        explanation: "Para fazer o merge de uma branch, você precisa estar na branch de destino, como a `main`.",
-        task: "Digite o comando para mudar para a branch `main`.",
-        validate: (input) => input.trim() === 'git checkout main',
-        hints: ["Como voltar para a branch principal?", "Use 'git checkout' com o nome da branch principal."]
-      },
-      {
-        title: "Nível 8: Fazendo o Merge (Intermediário)",
-        story: "Você está na branch principal, Zé! Agora Alex diz: 'Integre o código da branch 'feature-experimental' na `main`.'",
-        explanation: "O comando merge combina as alterações de uma branch na branch atual, unindo os históricos.",
-        task: "Digite o comando para fazer o merge da branch 'feature-experimental'.",
-        validate: (input) => input.trim() === 'git merge feature-experimental',
-        hints: ["Qual comando combina uma branch na atual?", "Tente 'git merge' seguido do nome da branch."]
-      },
-      {
-        title: "Nível 9: Enviando para o Time (Intermediário)",
-        story: "Seu código está pronto para o servidor da CodeZap, Zé. Alex te pede: 'Envie seus commits da branch 'main' para o repositório remoto.'",
-        explanation: "Para compartilhar seu trabalho, você envia (push) os commits para um repositório remoto, como no GitHub.",
-        task: "Digite o comando para enviar os commits da branch `main` para o repositório remoto.",
-        validate: (input) => {
-          const normalized = input.replace(/\s+/g, ' ').trim();
-          return normalized === 'git push origin main' ||
-                 normalized === 'git push';
-        },
-        hints: ["Como enviar commits para o repositório remoto?", "Tente 'git push' com o nome do remoto e da branch."]
-      },
-      {
-        title: "Nível 10: Resolvendo Conflitos - Parte 1 (Intermediário)",
-        story: "Outro colega alterou o mesmo arquivo que você, Zé, causando um conflito no merge. Alex diz: 'Primeiro, marque os arquivos resolvidos.'",
-        explanation: "Após resolver conflitos manualmente, você adiciona os arquivos ao staging para indicar que estão prontos.",
-        task: "Digite o comando para adicionar os arquivos resolvidos.",
-        validate: (input) => input.trim() === 'git add .',
-        hints: ["Como marcar arquivos após resolver conflitos?", "Use o mesmo comando que adiciona alterações ao staging."]
-      },
-      {
-        title: "Nível 11: Resolvendo Conflitos - Parte 2 (Intermediário)",
-        story: "Os arquivos estão marcados, Zé! Agora Alex diz: 'Finalize o merge para salvar as alterações combinadas.'",
-        explanation: "Após adicionar os arquivos resolvidos, você cria um commit para concluir o merge.",
-        task: "Digite o comando para finalizar o merge.",
-        validate: (input) => input.trim() === 'git commit',
-        hints: ["Como concluir um merge após resolver conflitos?", "Tente o comando que cria um commit."]
-      },
-      {
-        title: "Nível 12: Voltando no Tempo (Avançado)",
-        story: "Um bug foi introduzido no último commit, Zé, e Alex te pede: 'Desfaça o último commit, mas mantenha as alterações nos arquivos.'",
-        explanation: "O Git permite desfazer um commit sem perder as mudanças, deixando os arquivos no estado anterior ao commit, prontos para edição.",
-        task: "Digite o comando para desfazer o último commit, mantendo as alterações no diretório de trabalho.",
-        validate: (input) => {
-          const normalized = input.replace(/\s+/g, ' ').trim();
-          return normalized === 'git reset --soft HEAD~1';
-        },
-        hints: ["Como desfazer um commit sem perder mudanças?", "Tente 'git reset' com uma opção que preserva arquivos."]
-      },
-      {
-        title: "Nível 13: Reescrevendo a História (Avançado)",
-        story: "Você fez vários commits pequenos, Zé, mas Alex sugere: 'Junte os últimos três commits em um só, com uma mensagem clara.'",
-        explanation: "O Git permite reescrever o histórico, como combinar commits, para manter o histórico limpo e organizado.",
-        task: "Digite o comando para iniciar o processo de rebase interativo dos últimos três commits.",
-        validate: (input) => {
-          const normalized = input.replace(/\s+/g, ' ').trim();
-          return normalized === 'git rebase -i HEAD~3';
-        },
-        hints: ["Como combinar commits anteriores?", "Tente 'git rebase' com a opção interativa."]
-      },
-      {
-        title: "Nível 14: Recuperando uma Branch - Parte 1 (Avançado)",
-        story: "Parabéns, Zé! Você é quase um ninja Git na CodeZap. Um colega deletou a branch 'feature-deletada' por engano. Alex diz: 'Crie uma nova branch a partir do hash do último commit.'",
-        explanation: "O Git permite recriar uma branch a partir de um commit específico, usando seu hash (encontrado no reflog).",
-        task: "Digite o comando para criar a branch 'feature-deletada' a partir de um hash de commit.",
-        validate: (input) => {
-          const normalized = input.replace(/\s+/g, ' ').trim();
-          return normalized.match(/^git branch feature-deletada [0-9a-f]{7,40}$/);
-        },
-        hints: ["Como recriar uma branch a partir de um commit?", "Use 'git branch' com o nome e o hash do commit."]
-      },
-      {
-        title: "Nível 15: Recuperando uma Branch - Parte 2 (Avançado)",
-        story: "A branch 'feature-deletada' foi recriada, Zé! Agora Alex diz: 'Mude para essa branch para continuar o trabalho.'",
-        explanation: "Após recriar a branch, você precisa mudar para ela para torná-la ativa.",
-        task: "Digite o comando para mudar para a branch 'feature-deletada'.",
-        validate: (input) => input.trim() === 'git checkout feature-deletada',
-        hints: ["Como ativar uma branch recriada?", "Tente 'git checkout' com o nome da branch."]
-      }
-    ];
+    <script>
+        const questions = [
+            {
+                title: "Nível 1: Primeiro Passo (Iniciante)",
+                story: "Alex te entrega uma pasta de projeto e diz: 'Vamos começar, Zé! Transforme essa pasta num repositório Git.'",
+                explanation: "Para começar a usar Git num projeto, você precisa inicializar um repositório na pasta do projeto. Isso cria uma pasta oculta `.git` que armazena o histórico de versões.",
+                task: "Digite o comando para inicializar um repositório Git.",
+                validate: (input) => input.trim() === 'git init',
+                hints: ["Qual comando inicializa um repositório Git?", "Tente algo como 'git <ação>' para começar."]
+            },
+            {
+                title: "Nível 2: Adicionando Alterações (Iniciante)",
+                story: "Você escreveu um código para uma nova funcionalidade, Zé. Alex diz: 'Ótimo! Primeiro, adicione suas alterações ao Git para prepará-las.'",
+                explanation: "Antes de salvar mudanças no Git, você precisa colocá-las na área de staging, que é como uma lista de alterações prontas para o commit.",
+                task: "Digite o comando para adicionar todas as alterações à área de staging.",
+                validate: (input) => input.trim() === 'git add .',
+                hints: ["Como adicionar todos os arquivos alterados ao staging?", "Use 'git add' seguido de um caractere especial."]
+            },
+            {
+                title: "Nível 3: Criando um Commit (Iniciante)",
+                story: "Suas alterações estão prontas, Zé! Alex diz: 'Agora salve essas mudanças num commit com uma mensagem clara.'",
+                explanation: "Um commit é como um instantâneo das suas alterações, salvo com uma mensagem que descreve o que foi feito.",
+                task: "Digite o comando para criar um commit com a mensagem 'Adiciona nova funcionalidade'.",
+                validate: (input) => {
+                    const normalized = input.replace(/\s+/g, ' ').trim();
+                    return normalized === "git commit -m 'Adiciona nova funcionalidade'" ||
+                        normalized === 'git commit -m "Adiciona nova funcionalidade"';
+                },
+                hints: ["Qual comando cria um commit com uma mensagem?", "Tente 'git commit' com a opção '-m' seguida da mensagem."]
+            },
+            {
+                title: "Nível 4: Verificando o Progresso (Iniciante)",
+                story: "Alex quer saber o que você alterou antes de mandar o código para o time, Zé. Ela pede: 'Me mostra o que mudou nos arquivos desde o último commit.'",
+                explanation: "O Git permite ver as diferenças entre os arquivos atuais e o último commit, útil para revisar mudanças antes de salvá-las.",
+                task: "Digite o comando para exibir as alterações feitas nos arquivos.",
+                validate: (input) => input.trim() === 'git diff',
+                hints: ["Como ver as diferenças בין o estado atual e o último commit?", "Tente 'git <comando>' que mostra alterações."]
+            },
+            {
+                title: "Nível 5: Criando uma Branch (Intermediário)",
+                story: "A CodeZap quer testar uma funcionalidade experimental, Zé. Alex te orienta: 'Primeiro, crie uma nova branch chamada 'feature-experimental'.'",
+                explanation: "Uma branch é como uma linha paralela de desenvolvimento, permitindo alterações sem afetar a branch principal (geralmente `main`).",
+                task: "Digite o comando para criar uma nova branch chamada 'feature-experimental'.",
+                validate: (input) => input.trim() === 'git branch feature-experimental',
+                hints: ["Qual comando cria uma branch sem mudar para ela?", "Use 'git branch' seguido do nome da branch."]
+            },
+            {
+                title: "Nível 6: Mudando para a Branch (Intermediário)",
+                story: "Você criou a branch, Zé! Agora Alex diz: 'Mude para a branch 'feature-experimental' para começar a trabalhar nela.'",
+                explanation: "Para trabalhar numa branch, você precisa mudar para ela, definindo-a como a branch ativa.",
+                task: "Digite o comando para mudar para a branch 'feature-experimental'.",
+                validate: (input) => input.trim() === 'git checkout feature-experimental',
+                hints: ["Como mudar para uma branch existente?", "Tente 'git checkout' seguido do nome da branch."]
+            },
+            {
+                title: "Nível 7: Preparando o Merge (Intermediário)",
+                story: "Sua funcionalidade experimental foi aprovada, Zé! Alex diz: 'Antes de integrar o código, volte para a branch principal.'",
+                explanation: "Para fazer o merge de uma branch, você precisa estar na branch de destino, como a `main`.",
+                task: "Digite o comando para mudar para a branch `main`.",
+                validate: (input) => input.trim() === 'git checkout main',
+                hints: ["Como voltar para a branch principal?", "Use 'git checkout' com o nome da branch principal."]
+            },
+            {
+                title: "Nível 8: Fazendo o Merge (Intermediário)",
+                story: "Você está na branch principal, Zé! Agora Alex diz: 'Integre o código da branch 'feature-experimental' na `main`.'",
+                explanation: "O comando merge combina as alterações de uma branch na branch atual, unindo os históricos.",
+                task: "Digite o comando para fazer o merge da branch 'feature-experimental'.",
+                validate: (input) => input.trim() === 'git merge feature-experimental',
+                hints: ["Qual comando combina uma branch na atual?", "Tente 'git merge' seguido do nome da branch."]
+            },
+            {
+                title: "Nível 9: Enviando para o Time (Intermediário)",
+                story: "Seu código está pronto para o servidor da CodeZap, Zé. Alex te pede: 'Envie seus commits da branch 'main' para o repositório remoto.'",
+                explanation: "Para compartilhar seu trabalho, você envia (push) os commits para um repositório remoto, como no GitHub.",
+                task: "Digite o comando para enviar os commits da branch `main` para o repositório remoto.",
+                validate: (input) => {
+                    const normalized = input.replace(/\s+/g, ' ').trim();
+                    return normalized === 'git push origin main' ||
+                        normalized === 'git push';
+                },
+                hints: ["Como enviar commits para o repositório remoto?", "Tente 'git push' com o nome do remoto e da branch."]
+            },
+            {
+                title: "Nível 10: Resolvendo Conflitos - Parte 1 (Intermediário)",
+                story: "Outro colega alterou o mesmo arquivo que você, Zé, causando um conflito no merge. Alex diz: 'Primeiro, marque os arquivos resolvidos.'",
+                explanation: "Após resolver conflitos manualmente, você adiciona os arquivos ao staging para indicar que estão prontos.",
+                task: "Digite o comando para adicionar os arquivos resolvidos.",
+                validate: (input) => input.trim() === 'git add .',
+                hints: ["Como marcar arquivos após resolver conflitos?", "Use o mesmo comando que adiciona alterações ao staging."]
+            },
+            {
+                title: "Nível 11: Resolvendo Conflitos - Parte 2 (Intermediário)",
+                story: "Os arquivos estão marcados, Zé! Agora Alex diz: 'Finalize o merge para salvar as alterações combinadas.'",
+                explanation: "Após adicionar os arquivos resolvidos, você cria um commit para concluir o merge.",
+                task: "Digite o comando para finalizar o merge.",
+                validate: (input) => input.trim() === 'git commit',
+                hints: ["Como concluir um merge após resolver conflitos?", "Tente o comando que cria um commit."]
+            },
+            {
+                title: "Nível 12: Voltando no Tempo (Avançado)",
+                story: "Um bug foi introduzido no último commit, Zé, e Alex te pede: 'Desfaça o último commit, mas mantenha as alterações nos arquivos.'",
+                explanation: "O Git permite desfazer um commit sem perder as mudanças, deixando os arquivos no estado anterior ao commit, prontos para edição.",
+                task: "Digite o comando para desfazer o último commit, mantendo as alterações no diretório de trabalho.",
+                validate: (input) => {
+                    const normalized = input.replace(/\s+/g, ' ').trim();
+                    return normalized === 'git reset --soft HEAD~1';
+                },
+                hints: ["Como desfazer um commit sem perder mudanças?", "Tente 'git reset' com uma opção que preserva arquivos."]
+            },
+            {
+                title: "Nível 13: Reescrevendo a História (Avançado)",
+                story: "Você fez vários commits pequenos, Zé, mas Alex sugere: 'Junte os últimos três commits em um só, com uma mensagem clara.'",
+                explanation: "O Git permite reescrever o histórico, como combinar commits, para manter o histórico limpo e organizado.",
+                task: "Digite o comando para iniciar o processo de rebase interativo dos últimos três commits.",
+                validate: (input) => {
+                    const normalized = input.replace(/\s+/g, ' ').trim();
+                    return normalized === 'git rebase -i HEAD~3';
+                },
+                hints: ["Como combinar commits anteriores?", "Tente 'git rebase' com a opção interativa."]
+            },
+            {
+                title: "Nível 14: Recuperando uma Branch - Parte 1 (Avançado)",
+                story: "Parabéns, Zé! Você é quase um ninja Git na CodeZap. Um colega deletou a branch 'feature-deletada' por engano. Alex diz: 'Crie uma nova branch a partir do hash do último commit.'",
+                explanation: "O Git permite recriar uma branch a partir de um commit específico, usando seu hash (encontrado no reflog).",
+                task: "Digite o comando para criar a branch 'feature-deletada' a partir de um hash de commit.",
+                validate: (input) => {
+                    const normalized = input.replace(/\s+/g, ' ').trim();
+                    return normalized.match(/^git branch feature-deletada [0-9a-f]{7,40}$/);
+                },
+                hints: ["Como recriar uma branch a partir de um commit?", "Use 'git branch' com o nome e o hash do commit."]
+            },
+            {
+                title: "Nível 15: Recuperando uma Branch - Parte 2 (Avançado)",
+                story: "A branch 'feature-deletada' foi recriada, Zé! Agora Alex diz: 'Mude para essa branch para continuar o trabalho.'",
+                explanation: "Após recriar a branch, você precisa mudar para ela para torná-la ativa.",
+                task: "Digite o comando para mudar para a branch 'feature-deletada'.",
+                validate: (input) => input.trim() === 'git checkout feature-deletada',
+                hints: ["Como ativar uma branch recriada?", "Tente 'git checkout' com o nome da branch."]
+            }
+        ];
 
-    let currentQuestion = 0;
-    let repoState = { commits: [], branches: ['main'], currentBranch: 'main' };
-    let terminalHistory = [];
-    let hintVisible = false;
+        let currentQuestion = 0;
+        let repoState = { commits: [], branches: ['main'], currentBranch: 'main' };
+        let terminalHistory = [];
+        let hintVisible = false;
 
-    function displayQuestion() {
-      const question = questions[currentQuestion];
-      document.getElementById('question').innerHTML = `
+        function displayQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('question').innerHTML = `
         <h2>${question.title}</h2>
         <p><strong>História:</strong> ${question.story}</p>
         <div class="task-box">
@@ -365,190 +442,191 @@
           <p><strong>Tarefa:</strong> ${question.task}</p>
         </div>
       `;
-      document.getElementById('commandInput').value = '';
-      document.getElementById('hintBox').style.display = 'none';
-      hintVisible = false;
-      updateTerminal();
-      updateCommitTree();
-      document.getElementById('prevButton').disabled = currentQuestion === 0;
-      document.getElementById('nextButton').disabled = true;
-      document.getElementById('completionScreen').style.display = 'none';
-      document.getElementById('commandInput').focus();
-    }
+            document.getElementById('commandInput').value = '';
+            document.getElementById('hintBox').style.display = 'none';
+            hintVisible = false;
+            updateTerminal();
+            updateCommitTree();
+            document.getElementById('prevButton').disabled = currentQuestion === 0;
+            document.getElementById('nextButton').disabled = true;
+            document.getElementById('completionScreen').style.display = 'none';
+            document.getElementById('commandInput').focus();
+        }
 
-    function checkCommand() {
-      const input = document.getElementById('commandInput').value.trim();
-      const question = questions[currentQuestion];
-      if (question.validate(input)) {
-        const output = getCommandOutput(currentQuestion);
-        terminalHistory.push(`<span class="prompt">zé@codezap:~$</span> ${input}\n<span class="success">🎉 Sucesso! Comando correto.</span>\n${output}`);
-        updateRepoState(input);
-        if (currentQuestion < questions.length - 1) {
-          setTimeout(() => {
-            currentQuestion++;
+        function checkCommand() {
+            const input = document.getElementById('commandInput').value.trim();
+            const question = questions[currentQuestion];
+            if (question.validate(input)) {
+                const output = getCommandOutput(currentQuestion);
+                terminalHistory.push(`<span class="prompt">zé@codezap:~$</span> ${input}\n<span class="success">🎉 Sucesso! Comando correto.</span>\n${output}`);
+                updateRepoState(input);
+                if (currentQuestion < questions.length - 1) {
+                    setTimeout(() => {
+                        currentQuestion++;
+                        displayQuestion();
+                    }, 1000);
+                } else {
+                    terminalHistory.push(`<span class="success">🏆 Parabéns, Zé! Você dominou o Git na CodeZap!</span>`);
+                    updateTerminal();
+                    setTimeout(() => {
+                        document.getElementById('completionScreen').style.display = 'flex';
+                    }, 1000);
+                }
+            } else {
+                terminalHistory.push(`<span class="prompt">zé@codezap:~$</span> ${input}\n<span class="error">❌ Comando incorreto. Tente novamente!</span>\nDica: ${question.task}`);
+                updateTerminal();
+            }
+            document.getElementById('commandInput').value = '';
+        }
+
+        function showHint() {
+            const hintBox = document.getElementById('hintBox');
+            const question = questions[currentQuestion];
+            hintVisible = !hintVisible;
+            hintBox.style.display = hintVisible ? 'block' : 'none';
+            if (hintVisible) {
+                hintBox.innerHTML = `<strong>Dicas:</strong><ul>${question.hints.map(hint => `<li>${hint}</li>`).join('')}</ul>`;
+            }
+        }
+
+        function getCommandOutput(questionIndex) {
+            switch (questionIndex) {
+                case 0:
+                    return 'Initialized empty Git repository in /codezap/.git/';
+                case 1:
+                    return 'Changes staged for commit:\n  (use "git rm --cached <file>..." to unstage)\n\n\tnew file:   index.js';
+                case 2:
+                    return `[main (root-commit) a1b2c3d] Adiciona nova funcionalidade\n 1 file changed, 10 insertions(+)`;
+                case 3:
+                    return `diff --git a/index.js b/index.js\nindex 0000000..1234567\n--- /dev/null\n+++ index.js\n@@ -0,0 +1,3 @@\n+function novaFuncionalidade() {\n+  console.log("Olá, CodeZap!");\n+}`;
+                case 4:
+                    return `Created branch 'feature-experimental'`;
+                case 5:
+                    return `Switched to branch 'feature-experimental'`;
+                case 6:
+                    return `Switched to branch 'main'`;
+                case 7:
+                    return `Updating a1b2c3d..e4f5g6h\nFast-forward\n index.js | 2 ++\n 1 file changed, 2 insertions(+)`;
+                case 8:
+                    return `To github.com:codezap/project.git\n a1b2c3d..e4f5g6h main -> main`;
+                case 9:
+                    return 'Changes staged for commit:\n  (use "git rm --cached <file>..." to unstage)\n\n\tmodified:   index.js';
+                case 10:
+                    return `[main e4f5g6h] Merge branch 'feature-experimental'\n 1 file changed, 2 insertions(+)`;
+                case 11:
+                    return `HEAD is now at a1b2c3d Adiciona nova funcionalidade`;
+                case 12:
+                    return `(use "git rebase --continue" to continue)\npick e4f5g6h Commit 1\npick h7i8j9k Commit 2\npick k1l2m3n Commit 3`;
+                case 13:
+                    return `Branch 'feature-deletada' set up to track commit 1234567.`;
+                case 14:
+                    return `Switched to branch 'feature-deletada'`;
+                default:
+                    return 'Comando executado com sucesso!';
+            }
+        }
+
+        function updateRepoState(command) {
+            if (currentQuestion === 2) {
+                repoState.commits.push({ id: 'a1b2c3d', branch: 'main', message: 'Adiciona nova funcionalidade' });
+            } else if (currentQuestion === 4) {
+                repoState.branches.push('feature-experimental');
+            } else if (currentQuestion === 5) {
+                repoState.currentBranch = 'feature-experimental';
+            } else if (currentQuestion === 6) {
+                repoState.currentBranch = 'main';
+            } else if (currentQuestion === 7) {
+                repoState.commits.push({ id: 'e4f5g6h', branch: 'main', message: 'Merge feature-experimental' });
+                repoState.branches = repoState.branches.filter(b => b !== 'feature-experimental');
+            } else if (currentQuestion === 11) {
+                repoState.commits.pop();
+            } else if (currentQuestion === 13) {
+                repoState.branches.push('feature-deletada');
+            } else if (currentQuestion === 14) {
+                repoState.currentBranch = 'feature-deletada';
+            }
+            updateCommitTree();
+        }
+
+        function updateCommitTree() {
+            const canvas = document.getElementById('commitTree');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 200;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#e0e0e0';
+            ctx.font = '12px Fira Code';
+
+            let x = 50;
+            let y = 150;
+            repoState.commits.forEach((commit, i) => {
+                ctx.beginPath();
+                ctx.arc(x, y, 10, 0, 2 * Math.PI);
+                ctx.fillStyle = commit.branch === repoState.currentBranch ? '#00ff00' : '#ffeb3b';
+                ctx.fill();
+                ctx.fillStyle = '#e0e0e0';
+                ctx.fillText(commit.id.slice(0, 7), x - 20, y + 25);
+                if (i > 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(x - 50, y);
+                    ctx.lineTo(x, y);
+                    ctx.strokeStyle = '#00cc00';
+                    ctx.stroke();
+                }
+                x += 50;
+            });
+
+            repoState.branches.forEach((branch, i) => {
+                ctx.fillStyle = branch === repoState.currentBranch ? '#00ff00' : '#ffeb3b';
+                ctx.fillText(branch, 10, 30 + i * 20);
+            });
+        }
+
+        function updateTerminal() {
+            const terminal = document.getElementById('terminal');
+            terminal.innerHTML = terminalHistory.join('\n') +
+                (terminalHistory.length ? '\n' : '') +
+                `<span class="prompt">zé@codezap:~$</span> <span class="terminal-input" id="terminalInput">${document.getElementById('commandInput').value}</span>`;
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function restartGame() {
+            currentQuestion = 0;
+            terminalHistory = [];
+            repoState = { commits: [], branches: ['main'], currentBranch: 'main' };
             displayQuestion();
-          }, 1000);
-        } else {
-          terminalHistory.push(`<span class="success">🏆 Parabéns, Zé! Você dominou o Git na CodeZap!</span>`);
-          updateTerminal();
-          setTimeout(() => {
-            document.getElementById('completionScreen').style.display = 'flex';
-          }, 1000);
         }
-      } else {
-        terminalHistory.push(`<span class="prompt">zé@codezap:~$</span> ${input}\n<span class="error">❌ Comando incorreto. Tente novamente!</span>\nDica: ${question.task}`);
-        updateTerminal();
-      }
-      document.getElementById('commandInput').value = '';
-    }
 
-    function showHint() {
-      const hintBox = document.getElementById('hintBox');
-      const question = questions[currentQuestion];
-      hintVisible = !hintVisible;
-      hintBox.style.display = hintVisible ? 'block' : 'none';
-      if (hintVisible) {
-        hintBox.innerHTML = `<strong>Dicas:</strong><ul>${question.hints.map(hint => `<li>${hint}</li>`).join('')}</ul>`;
-      }
-    }
-
-    function getCommandOutput(questionIndex) {
-      switch (questionIndex) {
-        case 0:
-          return 'Initialized empty Git repository in /codezap/.git/';
-        case 1:
-          return 'Changes staged for commit:\n  (use "git rm --cached <file>..." to unstage)\n\n\tnew file:   index.js';
-        case 2:
-          return `[main (root-commit) a1b2c3d] Adiciona nova funcionalidade\n 1 file changed, 10 insertions(+)`;
-        case 3:
-          return `diff --git a/index.js b/index.js\nindex 0000000..1234567\n--- /dev/null\n+++ index.js\n@@ -0,0 +1,3 @@\n+function novaFuncionalidade() {\n+  console.log("Olá, CodeZap!");\n+}`;
-        case 4:
-          return `Created branch 'feature-experimental'`;
-        case 5:
-          return `Switched to branch 'feature-experimental'`;
-        case 6:
-          return `Switched to branch 'main'`;
-        case 7:
-          return `Updating a1b2c3d..e4f5g6h\nFast-forward\n index.js | 2 ++\n 1 file changed, 2 insertions(+)`;
-        case 8:
-          return `To github.com:codezap/project.git\n a1b2c3d..e4f5g6h main -> main`;
-        case 9:
-          return 'Changes staged for commit:\n  (use "git rm --cached <file>..." to unstage)\n\n\tmodified:   index.js';
-        case 10:
-          return `[main e4f5g6h] Merge branch 'feature-experimental'\n 1 file changed, 2 insertions(+)`;
-        case 11:
-          return `HEAD is now at a1b2c3d Adiciona nova funcionalidade`;
-        case 12:
-          return `(use "git rebase --continue" to continue)\npick e4f5g6h Commit 1\npick h7i8j9k Commit 2\npick k1l2m3n Commit 3`;
-        case 13:
-          return `Branch 'feature-deletada' set up to track commit 1234567.`;
-        case 14:
-          return `Switched to branch 'feature-deletada'`;
-        default:
-          return 'Comando executado com sucesso!';
-      }
-    }
-
-    function updateRepoState(command) {
-      if (currentQuestion === 2) {
-        repoState.commits.push({ id: 'a1b2c3d', branch: 'main', message: 'Adiciona nova funcionalidade' });
-      } else if (currentQuestion === 4) {
-        repoState.branches.push('feature-experimental');
-      } else if (currentQuestion === 5) {
-        repoState.currentBranch = 'feature-experimental';
-      } else if (currentQuestion === 6) {
-        repoState.currentBranch = 'main';
-      } else if (currentQuestion === 7) {
-        repoState.commits.push({ id: 'e4f5g6h', branch: 'main', message: 'Merge feature-experimental' });
-        repoState.branches = repoState.branches.filter(b => b !== 'feature-experimental');
-      } else if (currentQuestion === 11) {
-        repoState.commits.pop();
-      } else if (currentQuestion === 13) {
-        repoState.branches.push('feature-deletada');
-      } else if (currentQuestion === 14) {
-        repoState.currentBranch = 'feature-deletada';
-      }
-      updateCommitTree();
-    }
-
-    function updateCommitTree() {
-      const canvas = document.getElementById('commitTree');
-      const ctx = canvas.getContext('2d');
-      canvas.width = canvas.offsetWidth;
-      canvas.height = 200;
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#e0e0e0';
-      ctx.font = '12px Fira Code';
-      
-      let x = 50;
-      let y = 150;
-      repoState.commits.forEach((commit, i) => {
-        ctx.beginPath();
-        ctx.arc(x, y, 10, 0, 2 * Math.PI);
-        ctx.fillStyle = commit.branch === repoState.currentBranch ? '#00ff00' : '#ffeb3b';
-        ctx.fill();
-        ctx.fillStyle = '#e0e0e0';
-        ctx.fillText(commit.id.slice(0, 7), x - 20, y + 25);
-        if (i > 0) {
-          ctx.beginPath();
-          ctx.moveTo(x - 50, y);
-          ctx.lineTo(x, y);
-          ctx.strokeStyle = '#00cc00';
-          ctx.stroke();
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                displayQuestion();
+            }
         }
-        x += 50;
-      });
 
-      repoState.branches.forEach((branch, i) => {
-        ctx.fillStyle = branch === repoState.currentBranch ? '#00ff00' : '#ffeb3b';
-        ctx.fillText(branch, 10, 30 + i * 20);
-      });
-    }
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                terminalHistory = [];
+                repoState = { commits: [], branches: ['main'], currentBranch: 'main' };
+                displayQuestion();
+            }
+        }
 
-    function updateTerminal() {
-      const terminal = document.getElementById('terminal');
-      terminal.innerHTML = terminalHistory.join('\n') + 
-        (terminalHistory.length ? '\n' : '') + 
-        `<span class="prompt">zé@codezap:~$</span> <span class="terminal-input" id="terminalInput">${document.getElementById('commandInput').value}</span>`;
-      terminal.scrollTop = terminal.scrollHeight;
-    }
+        document.getElementById('commandInput').addEventListener('input', () => {
+            document.getElementById('terminalInput').textContent = document.getElementById('commandInput').value;
+            updateTerminal();
+        });
 
-    function restartGame() {
-      currentQuestion = 0;
-      terminalHistory = [];
-      repoState = { commits: [], branches: ['main'], currentBranch: 'main' };
-      displayQuestion();
-    }
+        document.getElementById('commandInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                checkCommand();
+            }
+        });
 
-    function nextQuestion() {
-      if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
         displayQuestion();
-      }
-    }
-
-    function previousQuestion() {
-      if (currentQuestion > 0) {
-        currentQuestion--;
-        terminalHistory = [];
-        repoState = { commits: [], branches: ['main'], currentBranch: 'main' };
-        displayQuestion();
-      }
-    }
-
-    document.getElementById('commandInput').addEventListener('input', () => {
-      document.getElementById('terminalInput').textContent = document.getElementById('commandInput').value;
-      updateTerminal();
-    });
-
-    document.getElementById('commandInput').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        checkCommand();
-      }
-    });
-
-    displayQuestion();
-  </script>
+    </script>
 </body>
+
 </html>
